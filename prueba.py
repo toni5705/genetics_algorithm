@@ -1,4 +1,4 @@
-import os
+import os,sys
 import pyNetLogo
 from multiprocessing import Process
 from datetime import datetime
@@ -62,11 +62,11 @@ class netlogoComm:
             for contador in range(10):
                 self.poblacion.append(Agente())   
             print("Created Default Config")
-            for contador in range(1):
-                timer.log("Setup")
-                p = Process(target=self.run,args=(contador,), name = str(contador))
-                p.start()
-            timer.log("Final")
+            #for contador in range(1):
+                #timer.log("Setup")
+                #p = Process(target=self.run,args=(contador,), name = str(contador))
+                #p.start()
+            self.run(0);
                 
 
 if __name__ == '__main__':
