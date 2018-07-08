@@ -132,11 +132,16 @@ to go
   if (behaviorspace-run-number != 0 and (ticks mod 24) = 0)
   [output-views]
 
-  if ticks >= 2
+  if ticks >= 5
       [file-open word id ".txt"
-      file-print "\nDead cells: "
+      ;Live
+      file-print count turtles with [state = "infected" and fluorescence / 120 > marker-detection-threashold and chromatin-condensed]
+      file-print " "
+       ;dead
       file-print count turtles with [state = "dead"]
-      file-print "\nChromatin condesed cells: "
+
+      ;Chromatin condesed cells
+      file-print " "
       file-print count turtles with [chromatin-condensed]
       file-close
       stop]

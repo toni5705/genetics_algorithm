@@ -66,8 +66,22 @@ class netlogoComm:
                 #timer.log("Setup")
                 #p = Process(target=self.run,args=(contador,), name = str(contador))
                 #p.start()
-            self.run(0);
-                
+            generaciones = 0
+            while(generaciones < 1):
+                contador = 0
+                while(contador < len(self.poblacion)):    
+                    self.run(contador);
+                    file = open("0.txt","r+")
+                    numeros = file.read().split()
+                    self.poblacion[contador].dead_cells = float(numeros[0])
+                    self.poblacion[contador].live_condensed = float(numeros[1])
+                    self.poblacion[contador].live = float(numeros[2])
+                    print(self.poblacion[contador].__dict__)
+                    file.close()
+                    os.remove("0.txt")
+                    contador += 20
+                generaciones += 1    
+                #metodos combinacion y mutación
 
 if __name__ == '__main__':
     timer = Timer()
