@@ -30,7 +30,7 @@ class netlogoComm:
             print("set id " +str(index))
             netlogo = pyNetLogo.NetLogoLink(gui=False)
             netlogo.load_model(r'simulacion.nlogo')
-            z = "set id " +str(1)
+            netlogo.command("set id " +str(index))
             netlogo.command(self.comandos[0]+str(self.poblacion[index].infection_rate))
             netlogo.command(self.comandos[1]+str(self.poblacion[index].initial_probability_of_death))
             netlogo.command(self.comandos[2]+str(self.poblacion[index].initial_probability_of_chromatin_condensation))
@@ -41,7 +41,7 @@ class netlogoComm:
             netlogo.command('setup')
             #timer.log("Final process")
             netlogo.repeat_command('go', 5)
-            print("Finished Model")
+            print("Finished Model process" + str(index))
             #timer.log("Final Thread")
 
     def set_commands(self):
@@ -54,33 +54,40 @@ class netlogoComm:
         self.comandos.append("set cell-density ")
 
     def __init__(self):
-            self.poblacion = []
-            self.comandos = []
-            self.set_commands()
-            timer.log("Inicio")
-            self.mode = "set"
-            for contador in range(10):
-                self.poblacion.append(Agente())   
-            print("Created Default Config")
-            #for contador in range(1):
-                #timer.log("Setup")
-                #p = Process(target=self.run,args=(contador,), name = str(contador))
-                #p.start()
-            generaciones = 0
-            while(generaciones < 1):
-                contador = 0
-                while(contador < len(self.poblacion)):    
-                    self.run(contador);
-                    file = open("0.txt","r+")
-                    numeros = file.read().split()
-                    self.poblacion[contador].dead_cells = float(numeros[0])
-                    self.poblacion[contador].live_condensed = float(numeros[1])
-                    self.poblacion[contador].live = float(numeros[2])
-                    print(self.poblacion[contador].__dict__)
-                    file.close()
-                    os.remove("0.txt")
-                    contador += 20
-                generaciones += 1    
+        self.numero_procesos = 3
+        self.poblacion = []
+        self.comandos = []
+        self.procesos = []
+        self.set_commands()
+        timer.log("Inicio")
+        self.mode = "set"
+        for contador in range(self.numero_procesos):
+            self.poblacion.append(Agente())   
+        print("Created Default Config")
+        for contador in range(self.numero_procesos):
+            timer.log("Setup")
+            p = Process(target=self.run,args=(contador,), name = str(contador))
+            self.procesos.append(p)
+            p.start()
+        for p in self.procesos:
+            p.join()
+        for contador in range(self.numero_procesos):
+            name = str(contador) + ".txt"
+            file = open(name,"r+")
+            numeros = file.read().split()
+            print("Resultados de proceso " + str(contador))
+            self.poblacion[contador].dead_cells = float(numeros[0])
+            self.poblacion[contador].live_condensed = float(numeros[1])
+            self.poblacion[contador].live = float(numeros[2])
+            print(self.poblacion[contador].__dict__)
+            file.close()
+            #os.remove("0.txt")
+
+
+
+
+
+        print("Todos los procesos terminaron")
                 #metodos combinacion y mutación
 
 if __name__ == '__main__':

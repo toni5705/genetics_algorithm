@@ -12,7 +12,6 @@ globals ;; Para definir las variables globales.
   alive-and-condensed
   initially-infected-cells
   prueba
-  id
 ]
 
 turtles-own ;; Para definir los atributos de las tortugas.
@@ -139,7 +138,6 @@ to go
       file-print " "
        ;dead
       file-print count turtles with [state = "dead"]
-
       ;Chromatin condesed cells
       file-print " "
       file-print count turtles with [chromatin-condensed]
@@ -730,6 +728,21 @@ NIL
 NIL
 NIL
 1
+
+SLIDER
+25
+538
+197
+571
+id
+id
+0
+100
+47.0
+1
+1
+NIL
+HORIZONTAL
 
 @#$#@#$#@
 ## ¿DE QUÉ SE TRATA?
