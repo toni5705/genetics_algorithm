@@ -46,7 +46,7 @@ class netlogoComm:
 
 
     #Método para elegir la aptidud del nuevo agente a partir de los padres, este escoge los atributos intercalados de uno en uno 
-    def metodo1(self,agente1,agente2):
+    def cruce1(self,agente1,agente2):
         hijo = Agente()
         if randint(0,1) >0:
             padre1 = agente1
@@ -55,9 +55,78 @@ class netlogoComm:
             padre1 = agente2
             padre2 = agente1
         
+        hijo.infection_rate = padre1.infection_rate
+        hijo.initial_probability_of_death = padre2.initial_probability_of_death
+        hijo.initial_probability_of_chromatin_condensation = padre1.initial_probability_of_chromatin_condensation
+        hijo.mNeptune_effectiveness = padre2.mNeptune_effectiveness
+        hijo.viral_reach = padre1.viral_reach
+        hijo.initial_infected_cell_percentage = padre2.initial_infected_cell_percentage
+        hijo.cell_density = padre1.cell_density
+        return hijo
+    #Método para elegir la aptidud del nuevo agente a partir de los padres, este escoge los atributos intercalados cada 2
+    def cruce2(self,agente1,agente2):
+        hijo = Agente()
+        if randint(0,1) >0:
+            padre1 = agente1
+            padre2 = agente2
+        else:
+            padre1 = agente2
+            padre2 = agente1
+        
+        hijo.infection_rate = padre1.infection_rate
+        hijo.initial_probability_of_death = padre1.initial_probability_of_death
+        hijo.initial_probability_of_chromatin_condensation = padre2.initial_probability_of_chromatin_condensation
+        hijo.mNeptune_effectiveness = padre2.mNeptune_effectiveness
+        hijo.viral_reach = padre1.viral_reach
+        hijo.initial_infected_cell_percentage = padre1.initial_infected_cell_percentage
+        hijo.cell_density = padre2.cell_density
+        return hijo
 
+    #Método para elegir la aptidud del nuevo agente a partir de los padres, este escoge los atributos aleatoriamente
+    def cruce3(self,agente1,agente2):
+        hijo = Agente()
+        if randint(0,1) >0:
+            padre1 = agente1
+            padre2 = agente2
+        else:
+            padre1 = agente2
+            padre2 = agente1
+        
+        if randint(0,1) >0:
+            hijo.infection_rate = padre1.infection_rate
+        else:
+            hijo.infection_rate = padre2.infection_rate
 
+        if randint(0,1) >0:
+            hijo.initial_probability_of_death = padre1.initial_probability_of_death
+        else:
+            hijo.initial_probability_of_death = padre2.initial_probability_of_death
 
+        if randint(0,1) >0:
+            hijo.initial_probability_of_chromatin_condensation = padre1.initial_probability_of_chromatin_condensation
+        else:
+            hijo.initial_probability_of_chromatin_condensation = padre2.initial_probability_of_chromatin_condensation
+
+        if randint(0,1) >0:
+            hijo.mNeptune_effectiveness = padre1.mNeptune_effectiveness
+        else:
+            hijo.mNeptune_effectiveness = padre2.mNeptune_effectiveness    
+        
+        if randint(0,1) >0:
+            hijo.viral_reach = padre1.viral_reach
+        else:
+            hijo.viral_reach = padre2.viral_reach  
+        
+        if randint(0,1) >0:
+            hijo.initial_infected_cell_percentage = padre1.initial_infected_cell_percentage
+        else:
+            hijo.initial_infected_cell_percentage = padre2.initial_infected_cell_percentage
+
+        if randint(0,1) >0:
+            hijo.cell_density = padre1.cell_density
+        else:
+            hijo.cell_density = padre2.cell_density
+        return hijo
 
 
     def set_commands(self):
@@ -78,7 +147,7 @@ class netlogoComm:
         agente2.error = 10000
         indice_superior = len(self.poblacion) - 1
         limite = len(self.poblacion)/2
-        for contador in range(limite):
+        for contador in range(int(limite)):
             if self.poblacion[contador].error < agente1.error:
                 agente1 = self.poblacion[contador]
             if self.poblacion[indice_superior].error < agente2.error:
@@ -87,10 +156,18 @@ class netlogoComm:
         for contador in range(len(self.poblacion)):
             self.poblacion.pop()
 
+        for contador in range(self.numero_procesos):
+            cruce = randint(0,2)
+            if cruce == 0:
+                self.poblacion.append(self.cruce1(agente1, agente2))
+            else:
+                if cruce == 1:
+                    self.poblacion.append(self.cruce2(agente1, agente2))
+                else:
+                    self.poblacion.append(self.cruce3(agente1, agente2))
 
-    
     def __init__(self):
-        self.numero_procesos = 3
+        self.numero_procesos = 10
         self.poblacion = []
         self.comandos = []
         self.procesos = []
@@ -100,6 +177,7 @@ class netlogoComm:
         for contador in range(self.numero_procesos):
             self.poblacion.append(Agente())   
         print("Created Default Config")
+        '''
         for contador in range(self.numero_procesos):
             timer.log("Setup")
             p = Process(target=self.run,args=(contador,), name = str(contador))
@@ -118,9 +196,10 @@ class netlogoComm:
             print(self.poblacion[contador].__dict__)
             file.close()
             os.remove(name)
-        
+        '''
         #*************Aca se ejecuta el método de calcular error**********************
         self.nueva_generación()
+        print("La nueva generación tiene " + str(len(self.poblacion)))
 
 
 
