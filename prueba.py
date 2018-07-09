@@ -166,6 +166,76 @@ class netlogoComm:
                 else:
                     self.poblacion.append(self.cruce3(agente1, agente2))
 
+    def mutar_poblacion(self):
+        porcentaje_cambio = 0.10
+        for contador in range(len(self.poblacion)):
+            if randint(0,100) >95:
+                atributo = randint(0,6)
+                if atributo == 0:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].infection_rate += (self.poblacion[contador].infection_rate * porcentaje_cambio)
+                        if self.poblacion[contador].infection_rate > 15:
+                            self.poblacion[contador].infection_rate = 15
+                    else:
+                        self.poblacion[contador].infection_rate -= (self.poblacion[contador].infection_rate * porcentaje_cambio)
+                        if self.poblacion[contador].infection_rate < 0:
+                            self.poblacion[contador].infection_rate = 0
+                elif atributo == 1:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].initial_probability_of_death += (self.poblacion[contador].initial_probability_of_death * porcentaje_cambio)
+                        if self.poblacion[contador].initial_probability_of_death > 2:
+                            self.poblacion[contador].initial_probability_of_death = 2
+                    else:
+                        self.poblacion[contador].initial_probability_of_death -= (self.poblacion[contador].initial_probability_of_death * porcentaje_cambio)
+                        if self.poblacion[contador].initial_probability_of_death < 0:
+                            self.poblacion[contador].initial_probability_of_death = 0
+                elif atributo == 2:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].initial_probability_of_chromatin_condensation += (self.poblacion[contador].initial_probability_of_chromatin_condensation * porcentaje_cambio)
+                        if self.poblacion[contador].initial_probability_of_chromatin_condensation > 3:
+                            self.poblacion[contador].initial_probability_of_chromatin_condensation = 3
+                    else:
+                        self.poblacion[contador].initial_probability_of_chromatin_condensation -= (self.poblacion[contador].initial_probability_of_chromatin_condensation * porcentaje_cambio)
+                        if self.poblacion[contador].initial_probability_of_chromatin_condensation < 0:
+                            self.poblacion[contador].initial_probability_of_chromatin_condensation = 0                                             
+                elif atributo == 3:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].mNeptune_effectiveness += (self.poblacion[contador].mNeptune_effectiveness * porcentaje_cambio)
+                        if self.poblacion[contador].mNeptune_effectiveness > 400:
+                            self.poblacion[contador].mNeptune_effectiveness = 400
+                    else:
+                        self.poblacion[contador].mNeptune_effectiveness -= (self.poblacion[contador].mNeptune_effectiveness * porcentaje_cambio)
+                        if self.poblacion[contador].mNeptune_effectiveness < 0:
+                            self.poblacion[contador].mNeptune_effectiveness = 0                        
+                elif atributo == 4:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].viral_reach += (self.poblacion[contador].viral_reach * porcentaje_cambio)
+                        if self.poblacion[contador].viral_reach > 3:
+                            self.poblacion[contador].viral_reach = 3
+                    else:
+                        self.poblacion[contador].viral_reach -= (self.poblacion[contador].viral_reach * porcentaje_cambio)
+                        if self.poblacion[contador].viral_reach < 0:
+                            self.poblacion[contador].viral_reach = 0
+                elif atributo == 5:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].initial_infected_cell_percentage += (self.poblacion[contador].initial_infected_cell_percentage * porcentaje_cambio)
+                        if self.poblacion[contador].initial_infected_cell_percentage > 100:
+                            self.poblacion[contador].initial_infected_cell_percentage = 100
+                    else:
+                        self.poblacion[contador].initial_infected_cell_percentage -= (self.poblacion[contador].initial_infected_cell_percentage * porcentaje_cambio)
+                        if self.poblacion[contador].initial_infected_cell_percentage < 0:
+                            self.poblacion[contador].initial_infected_cell_percentage = 0
+                else:
+                    if randint(0,1) >0:
+                        self.poblacion[contador].cell_density += (self.poblacion[contador].cell_density * porcentaje_cambio)
+                        if self.poblacion[contador].cell_density > 20:
+                            self.poblacion[contador].cell_density = 20
+                    else:
+                        self.poblacion[contador].cell_density -= (self.poblacion[contador].cell_density * porcentaje_cambio)
+                        if self.poblacion[contador].cell_density < 0:
+                            self.poblacion[contador].cell_density = 0           
+
+
     def __init__(self):
         self.numero_procesos = 10
         self.poblacion = []
@@ -200,7 +270,7 @@ class netlogoComm:
         #*************Aca se ejecuta el método de calcular error**********************
         self.nueva_generación()
         print("La nueva generación tiene " + str(len(self.poblacion)))
-
+        self.mutar_poblacion()
 
 
 

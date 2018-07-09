@@ -394,7 +394,7 @@ initial-infected-cell-percentage
 initial-infected-cell-percentage
 0.0
 100.0
-0.0
+100.0
 0.001
 1
 %
@@ -504,8 +504,8 @@ SLIDER
 infection-rate
 infection-rate
 0
-10
-5.5
+15
+15.0
 0.1
 1
 %
@@ -520,22 +520,22 @@ mNeptune-effectiveness
 mNeptune-effectiveness
 0
 400
-109.27
+400.0
 0.01
 1
 %
 HORIZONTAL
 
 SLIDER
-21
+28
 444
-255
+262
 477
 initial-probability-of-death
 initial-probability-of-death
 0
 2
-0.776
+2.0
 0.001
 1
 %
@@ -615,7 +615,7 @@ cell-density
 cell-density
 0
 20
-5.61
+20.0
 0.01
 1
 NIL
@@ -648,7 +648,7 @@ viral-reach
 viral-reach
 0
 3
-1.9
+3.0
 0.1
 1
 NIL
@@ -662,8 +662,8 @@ SLIDER
 initial-probability-of-chromatin-condensation
 initial-probability-of-chromatin-condensation
 0
-2
-0.85
+3
+3.0
 0.05
 1
 %
