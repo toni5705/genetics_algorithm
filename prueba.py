@@ -268,6 +268,11 @@ class netlogoComm:
             os.remove(name)
         '''
         #*************Aca se ejecuta el método de calcular error**********************
+        '''*********Valores teóricos
+            dead cells = 68.1157972
+            LiveCondensed = 11.1009198
+            Live = 20.7832829
+        '''
         self.nueva_generación()
         print("La nueva generación tiene " + str(len(self.poblacion)))
         self.mutar_poblacion()
