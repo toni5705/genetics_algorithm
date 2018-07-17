@@ -108,11 +108,11 @@ to setup ;; Para inicializar la simulación.
   set-plot-x-range ([t-report-reachable-neighbors] of (min-one-of turtles [t-report-reachable-neighbors])) ([t-report-reachable-neighbors] of (max-one-of turtles [t-report-reachable-neighbors]))
   histogram [count turtles in-radius viral-reach] of turtles
 
-  set-current-plot "Velocity"
-  set-plot-background-color gray
+  ;set-current-plot "Velocity"
+  ;set-plot-background-color gray
 
-  set-current-plot "Cells"
-  set-plot-background-color gray
+  ;set-current-plot "Cells"
+  ;set-plot-background-color gray
 end
 
 to go
@@ -128,10 +128,10 @@ to go
   actualizar-salidas
   tick
 
-  if (behaviorspace-run-number != 0 and (ticks mod 24) = 0)
-  [output-views]
+  ;if (behaviorspace-run-number != 0 and (ticks mod 24) = 0)
+  ;[output-views]
 
-  if ticks >= 5
+  if ticks >= 119
       [file-open word id ".txt"
       ;Live
       file-print count turtles with [state = "infected" and fluorescence / 120 > marker-detection-threashold and chromatin-condensed]
@@ -359,13 +359,13 @@ end
 ;;*********************
 @#$#@#$#@
 GRAPHICS-WINDOW
-1156
-20
-6189
-5054
+1054
+122
+1464
+533
 -1
 -1
-25.0
+2.0
 1
 10
 1
@@ -394,7 +394,7 @@ initial-infected-cell-percentage
 initial-infected-cell-percentage
 0.0
 100.0
-100.0
+0.0
 0.001
 1
 %
@@ -504,7 +504,7 @@ SLIDER
 infection-rate
 infection-rate
 0
-15
+30
 15.0
 0.1
 1
@@ -519,24 +519,24 @@ SLIDER
 mNeptune-effectiveness
 mNeptune-effectiveness
 0
-400
-400.0
+800
+100.0
 0.01
 1
 %
 HORIZONTAL
 
 SLIDER
-28
+21
 444
-262
+255
 477
 initial-probability-of-death
 initial-probability-of-death
 0
 2
-2.0
-0.001
+0.6
+0.01
 1
 %
 HORIZONTAL
@@ -590,9 +590,9 @@ NIL
 HORIZONTAL
 
 BUTTON
-1042
+1053
 74
-1150
+1161
 107
 update-colors
 update-colors
@@ -615,7 +615,7 @@ cell-density
 cell-density
 0
 20
-20.0
+1.6
 0.01
 1
 NIL
@@ -648,7 +648,7 @@ viral-reach
 viral-reach
 0
 3
-3.0
+1.5
 0.1
 1
 NIL
@@ -662,22 +662,22 @@ SLIDER
 initial-probability-of-chromatin-condensation
 initial-probability-of-chromatin-condensation
 0
-3
-3.0
+5
+2.5
 0.05
 1
 %
 HORIZONTAL
 
 CHOOSER
-1012
-21
-1150
-66
+1053
+18
+1191
+63
 View
 View
 "chromatin" "mNeptune" "dead cells"
-1
+2
 
 PLOT
 447
@@ -713,10 +713,10 @@ initially-infected-cells
 11
 
 BUTTON
-126
-56
-255
-89
+127
+58
+256
+91
 NIL
 setup-experiment
 NIL
@@ -730,15 +730,15 @@ NIL
 1
 
 SLIDER
-25
-538
-197
-571
+425
+689
+597
+722
 id
 id
 0
-100
-47.0
+500
+50.0
 1
 1
 NIL
@@ -1135,7 +1135,9 @@ NetLogo 6.0.3
 @#$#@#$#@
 <experiments>
   <experiment name="experiment" repetitions="10" runMetricsEveryStep="false">
-    <setup>setup-experiment</setup>
+    <setup>setup
+if initially-infected-cells = 0
+[ask one-of turtles [set state "infected"]]</setup>
     <go>go</go>
     <final>export-all-plots (word "experiment-" behaviorspace-run-number ".csv")</final>
     <metric>count turtles with [state = "dead"]</metric>
@@ -1143,9 +1145,15 @@ NetLogo 6.0.3
     <metric>count turtles with [chromatin-condensed]</metric>
     <metric>count turtles with [state = "dead" and chromatin-condensed]</metric>
     <metric>count turtles with [state = "infected" and chromatin-condensed]</metric>
-    <steppedValueSet variable="viral-reach" first="1.9" step="0.1" last="2.1"/>
-    <steppedValueSet variable="initial-probability-of-death" first="0.1" step="0.1" last="0.5"/>
-    <steppedValueSet variable="infection-rate" first="0.5" step="0.5" last="1.5"/>
+    <enumeratedValueSet variable="viral-reach">
+      <value value="1.5"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-probability-of-death">
+      <value value="0.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="infection-rate">
+      <value value="15"/>
+    </enumeratedValueSet>
     <enumeratedValueSet variable="initial-infected-cell-percentage">
       <value value="0.006"/>
     </enumeratedValueSet>
@@ -1153,7 +1161,7 @@ NetLogo 6.0.3
       <value value="0"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="mNeptune-effectiveness">
-      <value value="100"/>
+      <value value="400"/>
     </enumeratedValueSet>
     <enumeratedValueSet variable="total-time">
       <value value="120"/>
@@ -1164,7 +1172,45 @@ NetLogo 6.0.3
     <enumeratedValueSet variable="View">
       <value value="&quot;mNeptune&quot;"/>
     </enumeratedValueSet>
-    <steppedValueSet variable="initial-probability-of-chromatin-condensation" first="0.1" step="0.1" last="2"/>
+    <enumeratedValueSet variable="initial-probability-of-chromatin-condensation">
+      <value value="2.5"/>
+    </enumeratedValueSet>
+  </experiment>
+  <experiment name="experimentP" repetitions="1" runMetricsEveryStep="false">
+    <setup>setup
+if initially-infected-cells = 0
+[ask one-of turtles [set state "infected"]]</setup>
+    <go>go</go>
+    <final>export-all-plots (word "experiment-" behaviorspace-run-number ".csv")</final>
+    <metric>count turtles with [state = "dead"]</metric>
+    <metric>count turtles with [state = "infected"]</metric>
+    <metric>count turtles with [chromatin-condensed]</metric>
+    <metric>count turtles with [state = "dead" and chromatin-condensed]</metric>
+    <metric>count turtles with [state = "infected" and chromatin-condensed]</metric>
+    <enumeratedValueSet variable="viral-reach">
+      <value value="2"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="initial-probability-of-death" first="0.01" step="0.01" last="0.02"/>
+    <steppedValueSet variable="infection-rate" first="1" step="1" last="2"/>
+    <enumeratedValueSet variable="initial-infected-cell-percentage">
+      <value value="0.006"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="marker-detection-threashold">
+      <value value="0"/>
+    </enumeratedValueSet>
+    <steppedValueSet variable="mNeptune-effectiveness" first="100" step="100" last="300"/>
+    <enumeratedValueSet variable="total-time">
+      <value value="120"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="cell-density">
+      <value value="1.6"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="View">
+      <value value="&quot;mNeptune&quot;"/>
+    </enumeratedValueSet>
+    <enumeratedValueSet variable="initial-probability-of-chromatin-condensation">
+      <value value="0.01"/>
+    </enumeratedValueSet>
   </experiment>
 </experiments>
 @#$#@#$#@
