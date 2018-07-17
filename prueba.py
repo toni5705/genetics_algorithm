@@ -28,7 +28,7 @@ class netlogoComm:
     def run(self,index):
             #timer.log("Start Thread")
             print("set id " +str(index))
-            netlogo = pyNetLogo.NetLogoLink(gui=False)
+            netlogo = pyNetLogo.NetLogoLink(gui=True)
             netlogo.load_model(r'simulacion.nlogo')
             netlogo.command("set id " +str(index))
             netlogo.command(self.comandos[0]+str(self.poblacion[index].infection_rate))
@@ -237,7 +237,7 @@ class netlogoComm:
 
 
     def __init__(self):
-        self.numero_procesos = 10
+        self.numero_procesos = 2
         self.poblacion = []
         self.comandos = []
         self.procesos = []
@@ -247,7 +247,7 @@ class netlogoComm:
         for contador in range(self.numero_procesos):
             self.poblacion.append(Agente())   
         print("Created Default Config")
-        '''
+ 
         for contador in range(self.numero_procesos):
             timer.log("Setup")
             p = Process(target=self.run,args=(contador,), name = str(contador))
@@ -266,16 +266,16 @@ class netlogoComm:
             print(self.poblacion[contador].__dict__)
             file.close()
             os.remove(name)
-        '''
+        
         #*************Aca se ejecuta el método de calcular error**********************
         '''*********Valores teóricos
             dead cells = 68.1157972
             LiveCondensed = 11.1009198
             Live = 20.7832829
-        '''
+        
         self.nueva_generación()
         print("La nueva generación tiene " + str(len(self.poblacion)))
-        self.mutar_poblacion()
+        self.mutar_poblacion()'''
 
 
 

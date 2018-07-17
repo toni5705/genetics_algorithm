@@ -12,4 +12,4 @@ class Agente:
             self.dead_cells = dead_cells
             self.live_condensed = live_condensed
             self.live = live
-            self.error = uniform(0,1);
+            self.error = uniform(0,1)
