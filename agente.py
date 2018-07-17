@@ -1,8 +1,8 @@
 from random import uniform
 from sklearn.metrics import mean_squared_error
+from random import randint
 
 class Agente:
-      
 
       def __init__(self,infection_rate = 4.3,initial_probability_of_death=0.548,initial_probability_of_chromatin_condensation=0.3,mNeptune_effectiveness=294.63,viral_reach=2.5,initial_infected_cell_percentage = 4.527,cell_density= 5.48,dead_cells = 0, live_condensed =0,live=0):
             self.infection_rate = infection_rate 
@@ -18,8 +18,12 @@ class Agente:
             self.T1 = 68.1157972
             self.T2 = 11.1009198
             self.T3 = 20.7832829
-            self.error = self.__error__(self.T1,self.T2,self.T3,dead_cells,live_condensed,live)
+            #self.error = self.__error__(self.T1,self.T2,self.T3,dead_cells,live_condensed,live)
+            self.error = uniform(0, 8)
 
-      def __error__(self,T1,T2,T3,E1,E2,E3):
+      '''def __error__(self,T1,T2,T3,E1,E2,E3):
             self.error = mean_squared_error([T1,T2,T3],[E1,E2,E3])
-            return self.error
+            return self.error'''
+
+      def calculate_error(self):
+            self.error = mean_squared_error([self.T1,self.T2,self.T3],[self.dead_cells,self.live_condensed,self.live])

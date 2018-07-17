@@ -28,7 +28,7 @@ class netlogoComm:
     def run(self,index):
             #timer.log("Start Thread")
             print("set id " +str(index))
-            netlogo = pyNetLogo.NetLogoLink(gui=True)
+            netlogo = pyNetLogo.NetLogoLink(gui=False)
             netlogo.load_model(r'simulacion.nlogo')
             netlogo.command("set id " +str(index))
             netlogo.command(self.comandos[0]+str(self.poblacion[index].infection_rate))
@@ -40,7 +40,7 @@ class netlogoComm:
             netlogo.command(self.comandos[6]+str(self.poblacion[index].cell_density))
             netlogo.command('setup')
             #timer.log("Final process")
-            netlogo.repeat_command('go', 5)
+            netlogo.repeat_command('go', 120)
             print("Finished Model process" + str(index))
             #timer.log("Final Thread")
 
@@ -142,20 +142,27 @@ class netlogoComm:
 
     def nueva_generación(self):
         agente1 = Agente()
-        agente1.error = 10000
+        agente1.error = 1000000000000
         agente2 = Agente()
-        agente2.error = 10000
+        agente2.error = 1000000000000
         indice_superior = len(self.poblacion) - 1
         limite = len(self.poblacion)/2
         for contador in range(int(limite)):
+            print("Individuo")
+            print(self.poblacion[contador].__dict__)
+
             if self.poblacion[contador].error < agente1.error:
                 agente1 = self.poblacion[contador]
             if self.poblacion[indice_superior].error < agente2.error:
-                agente1 = self.poblacion[indice_superior]                  
+                agente2 = self.poblacion[indice_superior]
             indice_superior -= 1
+        print("*******************************************El individuo más alto de la generación**********************************************************")
+        if agente1.error < agente2.error:
+            print(agente1.__dict__)
+        else:
+            print(agente2.__dict__)
         for contador in range(len(self.poblacion)):
             self.poblacion.pop()
-
         for contador in range(self.numero_procesos):
             cruce = randint(0,2)
             if cruce == 0:
@@ -237,7 +244,8 @@ class netlogoComm:
 
 
     def __init__(self):
-        self.numero_procesos = 2
+        self.generaciones = 15
+        self.numero_procesos = 15
         self.poblacion = []
         self.comandos = []
         self.procesos = []
@@ -245,37 +253,33 @@ class netlogoComm:
         timer.log("Inicio")
         self.mode = "set"
         for contador in range(self.numero_procesos):
-            self.poblacion.append(Agente())   
-        print("Created Default Config")
- 
-        for contador in range(self.numero_procesos):
-            timer.log("Setup")
-            p = Process(target=self.run,args=(contador,), name = str(contador))
-            self.procesos.append(p)
-            p.start()
-        for p in self.procesos:
-            p.join()
-        for contador in range(self.numero_procesos):
-            name = str(contador) + ".txt"
-            file = open(name,"r+")
-            numeros = file.read().split()
-            print("Resultados de proceso " + str(contador))
-            self.poblacion[contador].dead_cells = float(numeros[1])
-            self.poblacion[contador].live_condensed = float(numeros[0])
-            self.poblacion[contador].live = float(numeros[2])
-            print(self.poblacion[contador].__dict__)
-            file.close()
-            os.remove(name)
-        
-        #*************Aca se ejecuta el método de calcular error**********************
-        '''*********Valores teóricos
-            dead cells = 68.1157972
-            LiveCondensed = 11.1009198
-            Live = 20.7832829
-        
-        self.nueva_generación()
-        print("La nueva generación tiene " + str(len(self.poblacion)))
-        self.mutar_poblacion()'''
+            self.poblacion.append(Agente())
+        self.mutar_poblacion()
+        for iteraciones in range(self.generaciones):
+            print("Generación número: " + str(iteraciones))
+            for contador in range(self.numero_procesos):
+                timer.log("Setup")
+                p = Process(target=self.run,args=(contador,), name = str(contador))
+                self.procesos.append(p)
+                p.start()
+            for p in self.procesos:
+                p.join()
+            for contador in range(self.numero_procesos):
+                name = str(contador) + ".txt"
+                file = open(name,"r+")
+                numeros = file.read().split()
+                #print("Resultados de proceso " + str(contador))
+                self.poblacion[contador].dead_cells = float(numeros[1])
+                self.poblacion[contador].live_condensed = float(numeros[0])
+                self.poblacion[contador].live = float(numeros[2])
+                #print(self.poblacion[contador].__dict__)
+                file.close()
+                os.remove(name)
+                self.poblacion[contador].calculate_error()
+            self.nueva_generación()
+            self.mutar_poblacion()
+            for contador in range(self.numero_procesos):
+                self.procesos.pop()
 
 
 
@@ -286,3 +290,9 @@ class netlogoComm:
 if __name__ == '__main__':
     timer = Timer()
     NetLogoInstance = netlogoComm()
+
+# *************Aca se ejecuta el método de calcular error**********************
+'''*********Valores teóricos
+    dead cells = 68.1157972
+    LiveCondensed = 11.1009198
+    Live = 20.7832829'''
