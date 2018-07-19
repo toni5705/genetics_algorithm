@@ -505,7 +505,7 @@ infection-rate
 infection-rate
 0
 30
-15.0
+2.7
 0.1
 1
 %
@@ -520,7 +520,7 @@ mNeptune-effectiveness
 mNeptune-effectiveness
 0
 800
-100.0
+324.093
 0.01
 1
 %
@@ -615,7 +615,7 @@ cell-density
 cell-density
 0
 20
-1.6
+1.0
 0.01
 1
 NIL
@@ -663,7 +663,7 @@ initial-probability-of-chromatin-condensation
 initial-probability-of-chromatin-condensation
 0
 5
-2.5
+0.07
 0.05
 1
 %
@@ -1129,7 +1129,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.1
+NetLogo 6.0.3
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@
