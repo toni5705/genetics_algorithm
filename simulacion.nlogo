@@ -131,16 +131,16 @@ to go
   ;if (behaviorspace-run-number != 0 and (ticks mod 24) = 0)
   ;[output-views]
 
-  if ticks >= 120
+  if ticks >= 119
       [file-open word id ".txt"
       ;Live
-      file-print count turtles with [state = "infected" and fluorescence / 120 > marker-detection-threashold and chromatin-condensed]
+      file-print count turtles with [state = "infected" and fluorescence / 120 > marker-detection-threashold]
       file-print " "
        ;dead
       file-print count turtles with [state = "dead"]
       ;Chromatin condesed cells
       file-print " "
-      file-print count turtles with [chromatin-condensed]
+      file-print count turtles with [state = "infected" and fluorescence / 120 > marker-detection-threashold and chromatin-condensed]
       file-close
       stop]
 end
@@ -1129,7 +1129,7 @@ false
 Polygon -7500403 true true 270 75 225 30 30 225 75 270
 Polygon -7500403 true true 30 75 75 30 270 225 225 270
 @#$#@#$#@
-NetLogo 6.0.3
+NetLogo 6.0.4
 @#$#@#$#@
 @#$#@#$#@
 @#$#@#$#@

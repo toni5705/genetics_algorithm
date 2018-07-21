@@ -41,7 +41,7 @@ class netlogoComm:
         f.write("viral:reach: " + str(agente.viral_reach)+'\n')
         f.close()
     def run(self,index):
-            print("set id " +str(index))
+            print("Proceso" +str(index))
             netlogo = pyNetLogo.NetLogoLink(gui=False)
             netlogo.load_model(r'simulacion.nlogo')
             netlogo.command("set id " +str(index))
@@ -52,8 +52,8 @@ class netlogoComm:
             netlogo.command(self.comandos[4]+str(self.poblacion[index].viral_reach))
             netlogo.command(self.comandos[5]+str(self.poblacion[index].initial_infected_cell_percentage))
             netlogo.command(self.comandos[6]+str(self.poblacion[index].cell_density))
-            netlogo.command('setup')
-            netlogo.repeat_command('go', 3)
+            netlogo.command('setup-experiment')
+            netlogo.repeat_command('go', 120)
             print("Finished Model process" + str(index))
 
     #Método para elegir la aptidud del nuevo agente a partir de los padres, este escoge los atributos intercalados de uno en uno 
@@ -209,8 +209,8 @@ class netlogoComm:
 
 
     def __init__(self):
-        self.generaciones = 15
-        self.numero_procesos = 5
+        self.generaciones = 1000000000
+        self.numero_procesos = 20
         self.poblacion = []
         self.comandos = []
         self.procesos = []
@@ -220,7 +220,7 @@ class netlogoComm:
             self.poblacion.append(Agente())
         self.mutar_poblacion()
         for iteraciones in range(self.generaciones):
-            print("Generación número: " + str(iteraciones))
+            print("**********************Generación número: " + str(iteraciones)+ " ******************************")
             for contador in range(self.numero_procesos):
                 p = Process(target=self.run,args=(contador,), name = str(contador))
                 self.procesos.append(p)
@@ -232,8 +232,8 @@ class netlogoComm:
                 file = open(name,"r+")
                 numeros = file.read().split()
                 self.poblacion[contador].dead_cells = float(numeros[1])
-                self.poblacion[contador].live_condensed = float(numeros[0])
-                self.poblacion[contador].live = float(numeros[2])
+                self.poblacion[contador].live_condensed = float(numeros[2])
+                self.poblacion[contador].live = float(numeros[0])
                 file.close()
                 os.remove(name)
                 self.poblacion[contador].calculate_error()
